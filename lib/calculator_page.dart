@@ -1,73 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:testflutter/components/custom_button.dart';
 import 'package:testflutter/components/custom_text.dart';
 import 'package:testflutter/components/custom_textField.dart';
+import 'package:testflutter/pages/calculator_controller.dart';
 
-class CalculatorPage extends StatefulWidget {
-  const CalculatorPage({super.key});
+class CalculatorPage extends StatelessWidget {
+  CalculatorPage({super.key});
 
-  @override
-  State<CalculatorPage> createState() => _CalculatorPageState();
-}
+  final CalculatorController controller = Get.put(CalculatorController());
 
-class _CalculatorPageState extends State<CalculatorPage> {
-   TextEditingController num1 = TextEditingController();
-   TextEditingController num2 = TextEditingController();
-  String _hasil = "0";
-  void _hitung(String operasi) {
-    double a = double.tryParse(num1.text) ?? 0;
-    double b = double.tryParse(num2.text) ?? 0;
-    double total = 0;
-    if (operasi == "+") total = a + b;
-    if (operasi == "-") total = a - b;
-    if (operasi == "*") total = a * b;
-    if (operasi == "/") {
-      if (a == 0 || b == 0) {
-        setState(() {
-          _hasil = "tidak boleh ada angka 0";
-        });
-        return;
-      }
-      total = a / b;
-    }
-    setState(() {
-      _hasil = total.toString();
-    });
-  }
+   TextEditingController txtangka1 = TextEditingController();
+   TextEditingController txtangka2 = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("MyCalculator")),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.all(10),
-            child: CustomTextfield(
-                hint: "Angka Pertama",
-                textEditingController: num1,
-                digitonly : true,
+      backgroundColor: Colors.grey.shade50,
+      appBar: AppBar(
+        title: const Text(
+          "My Calculator",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 10),
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    CustomTextField(hintText: "Angka Pertama", controller: txtangka1, isDigitsOnly: true,keyboardType: TextInputType.number),
+                    const SizedBox(height: 16),
+                    CustomTextField(hintText: "Angka Kedua", controller: txtangka2, isDigitsOnly: true,keyboardType: TextInputType.number,),
+                  ],
+                ),
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.all(10),
-            child: CustomTextfield(
-              hint: "Angka Pertama",
-              textEditingController: num2,
-              digitonly : true,
-            ),
-          ),
-          Container(
-            child:Row(
+            const SizedBox(height: 24),
+            Row(
               children: [
-                CustomButton(text: "+", onPressed: (){_hitung("+");}),
-                CustomButton(text: "-", onPressed: (){_hitung("-");}),
-                CustomButton(text: "x", onPressed: (){_hitung("*");}),
-                CustomButton(text: "/", onPressed: (){_hitung("/");}),
-              ]),
-          ),
-          CustomText(text: "Hasil : $_hasil")
-        ],
+                Expanded(
+                  child:CustomButton(text: "+", onPressed: () => controller.tambah(txtangka1.text, txtangka2.text),),),
+                const SizedBox(width: 8),
+                Expanded(child: CustomButton(text: "-", onPressed: () => controller.kurang(txtangka1.text, txtangka2.text),),),
+                const SizedBox(width: 8),
+                Expanded(child: CustomButton(text: "x", onPressed: () => controller.kali(txtangka1.text, txtangka2.text),),),
+                const SizedBox(width: 8),
+                Expanded(child: CustomButton(text: "/", onPressed: () => controller.bagi(txtangka1.text, txtangka2.text),),),
+              ],
+            ),
+
+            const SizedBox(height: 32),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.blueAccent.shade100.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.blueAccent.shade200, width: 1.5,),
+              ),
+              child: Column(
+                children: [
+                  const CustomText(text: "Hasil Perhitungan", fontSize: 14, color: Colors.grey,),
+                  const SizedBox(height: 8),
+                  Obx(() => CustomText(text: controller.hasilHitung.value.toString(), fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blueAccent.shade700,),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

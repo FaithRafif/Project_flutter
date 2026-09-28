@@ -2,46 +2,101 @@ import 'package:flutter/material.dart';
 import 'package:testflutter/components/custom_button.dart';
 import 'package:testflutter/components/custom_text.dart';
 import 'package:testflutter/components/custom_textField.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController txtUsername = TextEditingController();
-  TextEditingController txtPassword = TextEditingController();
+  final TextEditingController txtUsername = TextEditingController();
+  final TextEditingController txtPassword = TextEditingController();
   String statusLogin = "";
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("ini login page")),
-      body: Column(
-        children: [
-          CustomText(text: "Selamat datang di aplikasi $statusLogin"),
-          Container(
-            margin: EdgeInsets.all(10),
-            child: CustomTextfield(hint: "input username", textEditingController: txtUsername)
+    return Scaffold(
+      backgroundColor: Colors.grey.shade50,
+      appBar: AppBar(title: const Text("Login Page", style: TextStyle(fontWeight: FontWeight.bold),),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Center(
+        child: SingleChildScrollView(padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomText(
+                text: "Selamat Datang!",
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+                color: Colors.blueAccent.shade700,
+              ),
+              const SizedBox(height: 8),
+
+              if (statusLogin.isNotEmpty) ...[
+                CustomText(
+                  text: "Status Login: $statusLogin",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  textAlign: TextAlign.center,
+                  color: statusLogin == "berhasil"
+                      ? Colors.green
+                      : Colors.redAccent,
+                ),
+                const SizedBox(height: 16),
+              ],
+              Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        hintText: "Input Username", controller: txtUsername, isDigitsOnly: false, prefixIcon: Icons.person,
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        hintText: "Input Password", controller: txtPassword, isDigitsOnly: false, prefixIcon: Icons.lock,
+                      ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: CustomButton(
+                          text: "Login",
+                          onPressed: () {
+                            setState(() {
+                              String username = txtUsername.text.trim();
+                              String password = txtPassword.text.trim();
+
+                              if (username == "admin" && password == "admin") {
+                                statusLogin = "berhasil";
+                              } else {
+                                statusLogin = "failed";
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          Container(
-            margin: EdgeInsets.all(10),
-            child: CustomTextfield(hint: "Input Password", textEditingController: txtPassword)
-          ),
-            CustomButton(
-              text: "Login",
-              onPressed: (){
-                setState(() {
-                  String username = txtUsername.text;
-                  String password = txtPassword.text;
-                  if(username == "admin" && password == "admin"){
-                    statusLogin = "berhasil";
-                  }else{
-                    statusLogin = "failed";
-                  }
-                });
-            }
-            ),
-      ],
-    )
-      ,);
+        ),
+      ),
+    );
   }
 }
