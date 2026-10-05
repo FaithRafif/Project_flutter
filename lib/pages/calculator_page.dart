@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:testflutter/components/custom_button.dart';
 import 'package:testflutter/components/custom_text.dart';
 import 'package:testflutter/components/custom_textField.dart';
-import 'package:testflutter/pages/calculator_controller.dart';
+import 'package:testflutter/controllers/calculator_controller.dart';
 
 class CalculatorPage extends StatelessWidget {
   CalculatorPage({super.key});
@@ -53,16 +53,15 @@ class CalculatorPage extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child:CustomButton(text: "+", onPressed: () => controller.tambah(txtangka1.text, txtangka2.text),),),
+                  child:CustomButton(text: "+", onPressed: () => controller.tambah(txtangka1.text, txtangka2.text), child: const Text("+"),),),
                 const SizedBox(width: 8),
-                Expanded(child: CustomButton(text: "-", onPressed: () => controller.kurang(txtangka1.text, txtangka2.text),),),
+                Expanded(child: CustomButton(text: "-", onPressed: () => controller.kurang(txtangka1.text, txtangka2.text), child: const Text("+"),),),
                 const SizedBox(width: 8),
-                Expanded(child: CustomButton(text: "x", onPressed: () => controller.kali(txtangka1.text, txtangka2.text),),),
+                Expanded(child: CustomButton(text: "x", onPressed: () => controller.kali(txtangka1.text, txtangka2.text), child: const Text("+"),),),
                 const SizedBox(width: 8),
-                Expanded(child: CustomButton(text: "/", onPressed: () => controller.bagi(txtangka1.text, txtangka2.text),),),
+                Expanded(child: CustomButton(text: "/", onPressed: () => controller.bagi(txtangka1.text, txtangka2.text), child: const Text("+"),),),
               ],
             ),
-
             const SizedBox(height: 32),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),

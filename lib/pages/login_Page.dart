@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                                 statusLogin = "failed";
                               }
                             });
-                          },
+                          }, child: const Text("Login"),
                         ),
                       ),
                     ],

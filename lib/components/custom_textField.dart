@@ -7,7 +7,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final bool isDigitsOnly;
   final TextInputType? keyboardType;
-
+  final bool isPassword;
   const CustomTextField({
     super.key,
     required this.controller,
@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.isDigitsOnly = true,
     this.keyboardType,
+    this.isPassword = false
   });
 
   @override
@@ -53,6 +54,7 @@ class CustomTextField extends StatelessWidget {
           borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
         ),
       ),
+      obscureText: isPassword,
     );
   }
 }
