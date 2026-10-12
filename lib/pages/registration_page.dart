@@ -9,7 +9,6 @@ import '../routes.dart';
 
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(RegistrationController());
