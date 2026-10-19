@@ -1,16 +1,15 @@
 import 'package:get/get.dart';
 
 class ConfirmRegistrationController extends GetxController {
-  late String username = '';
-  late String namaLengkap = '';
-  late String email = '';
-  late String password = '';
-  late String confirmPassword = '';
-  late String noHp = '';
-  late String tanggalLahir = '';
-  late String jenisKelamin = '';
-  late String fotoProfil = '';
-  late String alamat = '';
+  late String username ;
+  late String namaLengkap ;
+  late String email ;
+  late String password;
+  late String confirmPassword ;
+  late String noHp;
+  late String tanggalLahir;
+  late String jenisKelamin;
+  late String alamat;
 
   @override
   void onInit() {
@@ -21,10 +20,9 @@ class ConfirmRegistrationController extends GetxController {
       email = arguments['email'] ;
       password = arguments['password'];
       confirmPassword = arguments['confirm_password'];
-      noHp = arguments['no_hp'] ?? '';
+      noHp = arguments['no_hp'];
       tanggalLahir = arguments['tanggal_lahir'];
       jenisKelamin = arguments['jenis_kelamin'];
-      fotoProfil = arguments['foto_profil'];
       alamat = arguments['alamat'];
     }
   }

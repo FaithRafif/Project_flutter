@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:testflutter/components/custom_button.dart';
+import 'package:testflutter/components/custom_text.dart';
 import 'package:testflutter/components/custom_textField.dart';
 
 import '../components/custom_dropdown.dart';
@@ -8,7 +9,7 @@ import '../controllers/registration_controller.dart';
 import '../routes.dart';
 
 class RegistrationPage extends StatelessWidget {
-  const RegistrationPage({super.key});
+  final RegistrationController controller = Get.put(RegistrationController());
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(RegistrationController());
@@ -19,9 +20,7 @@ class RegistrationPage extends StatelessWidget {
     final txtConfirmPassword = TextEditingController();
     final txtNoHp = TextEditingController();
     final txtTanggalLahir = TextEditingController();
-    final txtFotoProfil = TextEditingController();
     final txtAlamat = TextEditingController();
-
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -31,37 +30,22 @@ class RegistrationPage extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.person_add_alt_1_rounded,
-              size: 64,
-              color: Colors.blueAccent,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              "Buat Akun Baru",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              "Lengkapi data diri Anda di bawah ini",
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 24),
+            CustomText(text: "Buat Akun Baru",fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black87,),
+            const SizedBox(height: 2),
+            CustomText(text: "Lengkapi data diri Anda di bawah ini", fontSize: 13,color: Colors.grey,),
+            const SizedBox(height: 12),
             Card(
-              elevation: 3,
+              elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 child: Column(
                   children: [
                     CustomTextField(
@@ -70,21 +54,18 @@ class RegistrationPage extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       isDigitsOnly: false,
                     ),
-                    const SizedBox(height: 14),
                     CustomTextField(
                       controller: txtNamaLengkap,
                       hintText: "Nama Lengkap",
                       keyboardType: TextInputType.name,
                       isDigitsOnly: false,
                     ),
-                    const SizedBox(height: 14),
                     CustomTextField(
                       controller: txtEmail,
                       hintText: "Email",
                       keyboardType: TextInputType.emailAddress,
                       isDigitsOnly: false,
                     ),
-                    const SizedBox(height: 14),
                     CustomTextField(
                       controller: txtPassword,
                       hintText: "Password",
@@ -92,7 +73,6 @@ class RegistrationPage extends StatelessWidget {
                       isDigitsOnly: false,
                       isPassword: true,
                     ),
-                    const SizedBox(height: 14),
                     CustomTextField(
                       controller: txtConfirmPassword,
                       hintText: "Konfirmasi Password",
@@ -100,42 +80,27 @@ class RegistrationPage extends StatelessWidget {
                       isDigitsOnly: false,
                       isPassword: true,
                     ),
-                    const SizedBox(height: 14),
                     CustomTextField(
                       controller: txtNoHp,
                       hintText: "Nomor HP",
                       keyboardType: TextInputType.phone,
                       isDigitsOnly: true,
                     ),
-                    const SizedBox(height: 14),
-
                     CustomTextField(
                       controller: txtTanggalLahir,
                       hintText: "Tanggal Lahir (YYYY-MM-DD)",
                       keyboardType: TextInputType.datetime,
                       isDigitsOnly: false,
                     ),
-                    const SizedBox(height: 14),
-
-                    Obx(
-                      () => CustomDropdown(
-                        value: controller.selectedJenisKelamin.value,
-                        items: controller.listJenisKelamin,
-                        hintText: "Pilih Jenis Kelamin",
-                        onChanged: (newValue) {
-                          controller.setJenisKelamin(newValue);
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    CustomTextField(
-                      controller: txtFotoProfil,
-                      hintText: "URL Foto Profil",
-                      keyboardType: TextInputType.url,
-                      isDigitsOnly: false,
-                    ),
-                    const SizedBox(height: 14),
-
+                    Obx(() => CustomDropdown(
+                      selectedValue: controller.selectedJenisKelamin.value.isEmpty
+                          ? null
+                          : controller.selectedJenisKelamin.value,
+                      listItems: controller.listJenisKelamin,
+                      onChanged: (newValue) {
+                        controller.setJenisKelamin(newValue);
+                      },
+                    )),
                     CustomTextField(
                       controller: txtAlamat,
                       hintText: "Alamat",
@@ -146,11 +111,8 @@ class RegistrationPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: CustomButton(
+              const SizedBox(height: 20),
+              CustomButton(
                 text: "Daftar Sekarang",
                 onPressed: () {
                   Get.toNamed(
@@ -164,18 +126,11 @@ class RegistrationPage extends StatelessWidget {
                       'no_hp': txtNoHp.text,
                       'tanggal_lahir': txtTanggalLahir.text,
                       'jenis_kelamin': controller.selectedJenisKelamin.value,
-                      'foto_profil': txtFotoProfil.text,
                       'alamat': txtAlamat.text,
                     },
                   );
                 },
-                child: const Text(
-                  "Daftar Sekarang",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
               ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
